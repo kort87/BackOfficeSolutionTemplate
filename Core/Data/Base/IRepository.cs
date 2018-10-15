@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Core.Domains.Base;
 
 namespace Core.Data.Base
 {
@@ -56,30 +57,38 @@ namespace Core.Data.Base
         /// <param name="searchPhrase">le texte recherché</param>
         /// <returns>Prédicat de filtre prêt à l'emploi</returns>
         Expression<Func<TPoco, bool>> SearchQuery(string searchPhrase);
+
         /// <summary>
         /// Renvoi une query paginée, triée et filtrée selon les différents paramètres
         /// Idéal pour les listes
         /// </summary>
         /// <param name="total">permet le retour du nombre total de lignes</param>
         /// <param name="filter">expression de filtrage à appliquer</param>
+        /// <param name="foreignKey"></param>
         /// <param name="sort">champ (et ordre) sur lequel la query doit être trier</param>
         /// <param name="searchPhrase">texte libre de recherche</param>
         /// <param name="index">Page de départ de la query</param>
         /// <param name="size">Taille de la page (10 par défaut)</param>
         /// <returns>Un query pour liste paginée prête à l'emploi</returns>
         IQueryable<TPoco> Paginate(out int total, Expression<Func<TPoco, bool>> filter, TFk? foreignKey, string sort, string searchPhrase, int index, int size);
+
         /// <summary>
         /// Renvoi une query filtrée asynchrone
         /// </summary>
         /// <param name="predicate">expression de filtrage à appliquer</param>
+        /// <param name="searchPhrase"></param>
         /// <param name="max">nombre d'enregisterement max désiré (0 par défaut : tous les enregistrements)</param>
+        /// <param name="foreignKey"></param>
+        /// <param name="sort"></param>
         /// <returns>Un query pour liste prête à l'emploi</returns>
         Task<TPoco[]> ListAsync(Expression<Func<TPoco, bool>> predicate,TFk? foreignKey = null, string sort = null, string searchPhrase = null, int max = 0);
+
         /// <summary>
         /// Renvoi une query triée et filtrée selon les différents paramètres
         /// Idéal pour les traitements en masses
         /// </summary>
         /// <param name="filter">expression de filtrage à appliquer</param>
+        /// <param name="foreignKey"></param>
         /// <param name="sort">champ (et ordre) sur lequel la query doit être trier</param>
         /// <param name="searchPhrase">texte libre de recherche</param>
         /// <param name="size">nombre d'enregisterement max désiré (0 par défaut : tous les enregistrements)</param>
